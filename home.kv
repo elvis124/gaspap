@@ -1,0 +1,676 @@
+Screenmanager:
+    Homelogin:
+    CustomerRegister:
+    ShopRegister:
+    Shopmanager:
+    OrderingScreen:
+# : import Factory kivy.factory.Factory
+
+<Homelogin>:
+    name: 'loginscreen'
+    GridLayout:
+        size_hint: (1, 1)
+        orientation: 'horizontal'
+        canvas.before:
+            Color:
+                rgba: [.9,.9,.9,1]
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        rows: 8
+        GridLayout:
+            cols: 1
+            padding: 60
+            size_hint: (1,.1)
+            canvas.before:
+                Color:
+                    rgba: [.9, .9, .9,1]
+        BoxLayout:
+            size_hint: (.3, 1)
+            orientation: 'vertical'
+            padding: 10
+            StackLayout:
+                pos_hint: {'top':1}
+                orientation: 'tb-lr'
+                size_hint: (1, 1)
+                spacing: 5
+                canvas.before:
+                    Color:
+                        rgba: [.9,.9,.9,1]
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Label:
+                    text: 'buy or sell a gas at your comfort'
+                    color: [.0, .4, .4,1]
+                    font_size: 18
+                    bold: True
+                    size_hint:(1, .1)
+                Label:
+                    text: 'why G-Pap:'
+                    font_size: 16
+                    color: [.0, .4, .4,1]
+                    size_hint: (1, .1)
+                Label:
+                    text: 'save time and compare prices'
+                    font_size: 16
+                    size_hint: (1, .1)
+                    color: [.0, .4, .4,1]
+                
+                Label:
+                    text: 'expand your portfolio. '
+                    font_size: 16
+                    size_hint: (1, .1)
+                    color: [.0, .4, .4,1]
+                
+
+            GridLayout:
+                orientation: 'horizontal'
+                cols: 1
+                size_hint: (1, .6)
+                spacing: 10
+                padding: 10
+                StrokeaTextInput:
+                    id: number
+                    multline: False
+                    height: '20dp'
+                    size_hint:(5, .4)
+                    hint_text: 'Phone number'
+                    input_filter: 'int'
+                    use_bubble: True
+
+
+                StrokebTextInput: 
+                    id: passowrd
+                    multline: False
+                    height: '20dp'
+                    size_hint:(5, .4)
+                    password: True
+                    hint_text: 'passowrd'
+
+
+            GridLayout:
+                cols: 1
+                spacing: 20
+                padding: 10
+                background_color: [1,1,1,0]
+                size_hint: (1, .3)
+                canvas.before:
+                    Color:
+                        rgba: [1,1,1,0]
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                SmoothButton:
+                    text: 'Signin'
+                    id: signin
+                    size_hint:(2, .3)
+                    on_press: root.order()
+
+            BoxLayout:
+                size_hint:(1, .1)
+            GridLayout:
+                cols: 1
+                size_hint: (1, .2)
+                orientation: 'vertical'
+                Button:
+                    text: 'forgot password ?'
+                    color: 
+                    size_hint: (1, .2)
+                    color: [.0, .4, .4,1]
+                    background_color: (0,0,0,0)
+            BoxLayout:
+                size_hint: (1, .3)
+                padding: 10
+                font_size: 10
+                SmotButton:
+                    text: 'you do not have account? sign up here'
+                    color: [1,1,1,1]
+                    size_hint: (1, 1)
+                    on_press:root.regitser()
+            BoxLayout:
+                size_hint: (1, .5)
+
+<CustomerRegister>:
+    name: 'customerregistry'
+    GridLayout:
+        rows:6
+        padding:10
+        size_hint: (1, 1)
+        canvas.before:
+            Color:
+                rgba: [.9,.9,.9,1]
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        GridLayout:
+            size_hint: (1, .2)
+            cols: 1
+
+        GridLayout:
+            rows: 4
+            size_hint: (1, .1)
+            spacing: 0.5
+            orientation: 'vertical'
+            Label:
+                text: 'This page is for the customers who would'
+                font_size: 15
+                color: [.0, .4,.4,1]
+            Label:
+                text: 'like to buy gas cylinder refill or both. or else'
+                font_size: 15
+                color: [.0, .4,.4,1]
+            Label:
+                text: 'use the back button to register retail shop'
+                font_size: 15
+                color: [.0, .4,.4,1]
+        GridLayout:
+            size_hint: (1, .07)
+            cols: 1
+        StackLayout:
+            cols: 1
+            padding: 10
+            orientation: 'lr-tb'
+            size_hint: (1, .5)
+            spacing: 10
+            canvas.before:
+                Color:
+                    rgba: [.9, .9, .9,1]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            TextInput:
+                id: n_email_address
+                hint_text: 'emaill address'
+                size_hint: (1, .2)
+            TextInput:
+                id: phone_number
+                hint_text: 'phone number'
+                size_hint: (1, .2)
+                input_filter: 'int'
+            TextInput:
+                id: n_password
+                password: True
+                hint_text: 'password'
+                size_hint: (1, .2)
+            TextInput:
+                id: n_confirm_password
+                password: True
+                hint_text: 'confirm password'
+                size_hint: (1, .2)
+                use_bubble: True
+        StackLayout:
+            cols: 2
+            padding: 10
+            size_hint: (1, .2)
+            orientation: 'lr-tb'
+            spacing: 1.5
+            BackButton:
+                text: 'Back'
+                size_hint: (.5, .6)
+                on_press: root.back()
+                border_radius: [20,2,2,20]
+            RegisterButton:
+                text: 'Register'
+                size_hint: (.5, .6)
+                border_radius: [2,20,20,2]
+                on_press: root.register()
+        GridLayout:
+            cols: 1
+            size_hint: (1, .2)
+
+
+
+            
+<ShopRegister>:
+    name: 'shopregister'
+    GridLayout:
+        cols: 1
+        rows: 7
+        orientation: 'vertical'
+        size_hint: (1, 1)
+        canvas.before:
+            Color: 
+                rgba: [.9,.9,.9,1]
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        GridLayout:
+            cols: 1
+            size_hint: (1, .05)
+        GridLayout: 
+            cols:1
+            orientation: 'vertical'
+            size_hint: (1, .1)
+            spacing: 10
+            canvas.before:
+                Color:
+                    rgba: [.9, .9, .9,1]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            Label:
+                text: 'this page is for shop owners who would like to'
+                color: [.0, .4,.4,1]
+            Label:
+                text: 'register their shops to expand thier business'
+                color: [.0, .4,.4,1]
+            Label:
+                text: 'to manage order online and distribute gas'
+                color: [.0, .4,.4,1]
+        GridLayout:
+            cols: 1
+            size_hint: (1, .05)
+
+        GridLayout:
+            cols: 1
+            size_hint: (1, .3)
+            spacing: 5
+            padding: 10
+            canvas.before:
+                Color:
+                    rgba: [.9, .9, .9, 1]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            TextInput:
+                id: n_shop_name
+                hint_text: 'shop name'
+                use_bubble: True
+            TextInput:
+                id: n_shop_owner
+                hint_text: 'shop owner'
+                use_bubble: True
+            TextInput:
+                id: n_email_address
+                hint_text: 'email address'
+                use_bubble: True
+
+            TextInput:
+                id: n_phone_number
+                hint_text: 'phone number'
+                input_filter: 'int'
+                use_bubble: True
+        GridLayout:
+            cols:2
+            size_hint: (1, .2)
+            spacing: 5
+            padding: 10
+            canvas.before:
+                Color:
+                    rgba: [.9, .9, .9, 1]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            TextInput:
+                id: country
+                hint_text: 'country'
+            TextInput:
+                id: county
+                hint_text: 'county'
+            TextInput:
+                id: n_consituency
+                hint_text: 'consituency'
+            TextInput:
+                id: n_ward
+                hint_text: 'ward'
+        GridLayout:
+            cols:1
+            size_hint: (1, .2)
+            spacing: 5
+            padding: 10
+            canvas.before:
+                Color:
+                    rgba: [.9, .9, .9, 1]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            TextInput:
+                id: n_password
+                password:True
+                hint_text: 'password'
+            TextInput:
+                id: n_confirm_password
+                password:True
+                hint_text:'confirm passowrd'
+        GridLayout:
+            cols: 2
+            size_hint: (1,.1)
+            padding: 10
+            spacing: 5
+            canvas.before:
+                Color: 
+                    rgba: [.9, .9, .9, 1]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            ShopregisterButton:
+                text: 'Register'
+                id: btnregister
+                border_radius: [20,2,2,20]
+                on_press: root.register()
+            ShopbackButton:
+                text:'back'
+                id: btnnback
+                on_press: root.back()
+                border_radius: [2,20,20,2]
+        GridLayout:
+            cols: 1
+            size_hint: (1, .05)
+
+
+<Shopmanager>:
+    name: 'managing'
+    StackLayout:
+        size_hint: (1, 1)
+        orientation: 'tb-lr'
+        rows: 2
+        GridLayout:
+            size_hint: (1, .2)
+            cols: 3
+            spacing: 10
+            padding: 10
+            canvas.before:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            StackLayout:
+                Button:
+                    text: 'My Account'
+                    size_hint: (1, .1)
+            StackLayout:
+                Button:
+                    text: 'My Stock'
+                    size_hint: (1, .2)
+            StackLayout:
+                Button:
+                    text: 'My Orders'
+                    size_hint:(1, .2)
+        GridLayout:
+            size_hint: (1, .8)
+            id: mydisplays
+            canvas.before:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+
+
+<SmoothButton@Button>:
+    background_color:  [.0, .4, .4,1]
+    background_color: (0,0,0,0)
+    border_radius: [18]
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.border_radius
+<SmotButton@Button>:
+    background_color:  [.0, .4, .4,1]
+    background_color: (0,0,0,0)
+    border_radius: [18]
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.border_radius
+<StrokeaTextInput@TextInput>:
+    background_color: [1,1,1,0]
+    border_radius: 20
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        Line:
+            rounded_rectangle: (self.pos[0], self.pos[1], self.size[0], self.size[1], self.border_radius)
+            width: 1.2
+<StrokebTextInput@TextInput>:
+    background_color:  [1,1,1,0]
+    border_radius: 20
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        Line:
+            rounded_rectangle: (self.pos[0], self.pos[1], self.size[0], self.size[1], self.border_radius)
+            width: 1.2
+
+<BackButton@Button>:
+    background_color:  [.0, .4, .4,1]
+    background_color: (0,0,0,0)
+    border_radius: [20]
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.border_radius
+<RegisterButton@Button>:
+    background_color:  [.0, .4, .4,1]
+    background_color: (0,0,0,0)
+    border_radius: [20]
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.border_radius
+<ShopregisterButton@Button>:
+    background_color:  [.0, .4, .4,1]
+    background_color: (0,0,0,0)
+    border_radius: [20]
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.border_radius
+<ShopbackButton@Button>:
+    background_color:  [.0, .4, .4,1]
+    background_color: (0,0,0,0)
+    border_radius: [20]
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.border_radius
+
+#screen for ordering
+<OrderingScreen>:
+    name: 'orderingscreen'
+    GridLayout:
+        rows: 4
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: [.9,9,.9,1]
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        GridLayout:
+            cols: 1
+            size_hint: (1, .05)
+            padding: 4
+            spacing: 1.5
+            orientation: 
+            canvas.before:
+                Color:
+                    rgba: [.9,9,.9,1]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            Label:
+                text: 'Fill in the information below and search ' 
+                color: [.0, .4, .4,1]
+        GridLayout:
+            cols: 2
+            size_hint: (1, .2)
+            padding: 10
+            spacing: 5
+            orientation: 
+            canvas.before:
+                Color:
+                    rgba: [1,1,1,0]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+# : import r rando.random3
+# : set d round
+            Smooth1Button:
+                id: n_type
+                text: 'Type'
+                values: ['k-gas', 'Total']
+                size_hint: (1,.1)
+                color: [.0, .4, .4,1]
+            Smooth2Button:
+                id: weight
+                text: 'weight'
+                input_filter: 'int'
+                values: ['5,', '8', '10', '14', '18']
+                size_hint: (1, .1)
+                color: [.0, .4, .4,1]
+            Smooth3Button:
+                id: units
+                text: 'units'
+                size_hint: (1, .1)
+                input_filter: 'int'
+                values: ['1', '2']
+                color: [.0, .4, .4,1]
+            Stroke4TextInput:
+                id: where_to
+                hint_text: 'where to'
+                size_hint: (1, .1)
+
+        GridLayout:
+            cols: 1
+            size_hint: (1,.2)
+            padding:10
+            spacing: 1.5
+            Smooth5Button:
+                id: search
+                text: 'Search'
+                size_hint: (1, .05)
+                border_radius:[18,18,2,2]
+                on_press: root.search()
+            Label:
+                text: 'press on the shop of your choice and make and make an order'
+                color: [.0, .4, .4,1]
+                size_hint: (1, .05)
+        ScrollView:
+            size_hint: (1, .8)
+            canvas.before:
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            GridLayout:
+                id: displayofshops
+                cols: 1
+                padding: 10
+                spacing: 5
+                canvas.before:
+                    Color:
+                        rgba: [.9,9,.9,1]
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Label:
+                    text: 'hallow'
+                    color: [.0, .4, .4,1]
+                Label:
+                    text: 'hallow'
+                    color: [.0, .4, .4,1]
+                Label:
+                    text: 'hallow'
+                    color: [.0, .4, .4,1]
+                Label:
+                    text: 'hallow'
+                    color: [.0, .4, .4,1]
+                Label:
+                    text: 'hallow'
+                    color: [.0, .4, .4,1]
+
+
+
+<Smooth1Button@Spinner>:
+    background_color:  [1,1,1,0]
+    border_radius: 20
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        Line:
+            rounded_rectangle: (self.pos[0], self.pos[1], self.size[0], self.size[1], self.border_radius)
+            width: 1.2
+<Smooth2Button@Spinner>:
+    background_color:  [1,1,1,0]
+    border_radius: 20
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        Line:
+            rounded_rectangle: (self.pos[0], self.pos[1], self.size[0], self.size[1], self.border_radius)
+            width: 1.2
+<Smooth3Button@Spinner>:
+    background_color:  [1,1,1,0]
+    border_radius: 20
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        Line:
+            rounded_rectangle: (self.pos[0], self.pos[1], self.size[0], self.size[1], self.border_radius)
+            width: 1.2
+<Stroke4TextInput@TextInput>:
+    background_color:  [1,1,1,0]
+    border_radius: 20
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        Line:
+            rounded_rectangle: (self.pos[0], self.pos[1], self.size[0], self.size[1], self.border_radius)
+            width: 1.2
+<Smooth5Button@Button>:
+    background_color:  [1,1,1,0]
+    border_radius: [18]
+    back_color: [.0, .4, .4,1]
+    background_normal: ''
+    canvas.before:
+        Color: 
+            rgba: self.back_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.border_radius
+            
+
+
+             
