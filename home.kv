@@ -3,6 +3,7 @@
 #: import ListItemButton kivy.uix.listview.ListItemButton
 Screenmanager:
     Homelogin:
+    Search:
     CustomerRegister:
     ShopRegister:
     OrderingScreen:
@@ -538,7 +539,7 @@ Screenmanager:
                 pos: self.pos
         GridLayout:
             cols: 1
-            size_hint: (1, .05)
+            size_hint: (1, .4)
             padding: 4
             spacing: 1.5
             orientation: 
@@ -552,11 +553,11 @@ Screenmanager:
                 text: 'Fill in the information below and search ' 
                 color: [.0, .4, .4,1]
         GridLayout:
-            cols: 2
-            size_hint: (1, .2)
-            padding: 10
+            id: widgets
+            rows: 3
+            size_hint: (1, .3)
             spacing: 5
-            orientation: 
+            orientation: 'tb-lr' 
             canvas.before:
                 Color:
                     rgba: [1,1,1,0]
@@ -565,79 +566,97 @@ Screenmanager:
                     pos: self.pos
             Smooth1Button:
                 id: n_type
-                text: 'choose the type'
-                size_hint: (1,.1)
-                color: [.0, .4, .4,1]
-                on_press: root.n_type()
+                text: 'example Total'
+                color: [0,0,0,1]
+                values: ['Total', 'Hashi', 'K-gas']
+                size_hint: (1,.2)
+
             Smooth2Button:
                 id: weight
-                text: 'choose the weight'
-                input_filter: 'int'
-                values:  ['4', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70']
-                size_hint: (1, .1)
-                color: [.0, .4, .4,1]
+                text: 'enter weight example 16.5'
+                values: ['12.5', '12.5', '5.6', '4.6']
+                size_hint: (1, .2)
+                color: [0,0,0,1]
             Smooth3Button:
                 id: units
-                text: 'choose the units'
-                size_hint: (1, .1)
+                text: 'units(ngapi) example 1'
                 input_filter: 'int'
-                values: ['1', '2', '3', '4', '5', '6', '8', '10', '11', '12', '13','14', '15', '16', '17', '18', '19', '20']
-                color: [.0, .4, .4,1]
-            Stroke4TextInput:
-                id: where_to
-                hint_text: 'where to be delivered'
-                size_hint: (1, .1)
+                values: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+                color: [0,0,0,1]
+                size_hint: (1,.2)
 
         GridLayout:
-            cols: 2
-            size_hint: (1,.1)
+            cols: 1
+            size_hint: (1, .1)
+            orientation: 'vertical'
+            spacing: 5
+            canvas.before:
+                Color:
+                    rgba: [1,1,1,0]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Stroke4TextInput:
+                id: where_to
+                size_hint: (1,.2)
+                hint_text: 'where to be delivered(describe) example embakasi fedha opposite church court'
+
+        StackLayout:
+            cols: 1
+            size_hint: (1,.4)
             padding:10
+            orientation: 'lr-tb'
             spacing: 2
             Smooth5Button:
                 id: search
                 text: 'Search'
-                size_hint: (1, .05)
+                size_hint: (.5, .2)
                 border_radius:[18,18,2,2]
                 on_press: root.search()
             Smooth6Button:
                 id: n_my_activites
                 text: 'My activities'
-                size_hint: (1, .05)
+                size_hint: (.5, .2)
                 border_radius:[18,18,2,2]
-                on_press: root.search()
+                on_press: root.activity_search()
+
+
+
+<Search>:
+    name: 'search'
+    GridLayout:
+        cols: 1
+        orientation: 'vertical'
         GridLayout:
+            size_hint: (1, .1)
             cols: 1
-            size_hint: (1,.1)
-            padding:2
+            canvas.before:
+                Color:
+                    rgba: [.9, .9,.9,1]
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
             Label:
-                text: 'press on the shop of your choice and send the order instantly'
-                color: [.0, .4, .4,1]
-                size_hint: (1, .05)
+                text: ' These are the available shops near you'
+                color: [.0,.4, .4,1]
+
         ScrollView:
             size_hint: (1, .8)
-            padding: 5
-            bar_width: 3
-            do_scroll_x: True
-            do_scroll_y: True
+            orientation: 'vertical'
+            size_hint: (.3, 1)
             canvas.before:
                 Rectangle:
                     size: self.size
                     pos: self.pos
             BoxLayout:
-                cols: 1
+                id: displays
                 orientation: 'vertical'
                 canvas.before:
-                spacing: 3
-                canvas.before:
                     Color:
-                        rgba: [1,1,1,0]
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
-                ListView:
-                    id: displayofshops
-                    adapter:
-                        ListAdapter(data=["Shop>     Petrol1     Type> Hashi price> 1000    distance>500 from you ","Shop> Petrol1 Type> Hashi price> 1000 distance>500 from you", "Shop> Petrol1 Type> Hashi price> 1000 distance>500 from you"], cls=main.Listbutton)
+                        rgba: [0,0,0,1]
+   
 
 
 <Smooth1Button@Spinner>:

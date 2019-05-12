@@ -18,6 +18,7 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.spelling import SpellingBase
 from kivy.core.window import Window
+from easygui import msgbox
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
@@ -39,7 +40,6 @@ from kivy.clock import Clock
 from kivy.graphics.vertex_instructions import RoundedRectangle
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
-from kivy.uix.scrollview import ScrollView
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.bubble import Bubble, BubbleButton
 from kivy.uix.button import Button
@@ -77,13 +77,13 @@ from kivy.loader import Loader
 from kivy.uix.modalview import ModalView
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListItemButton
+from kivy.uix.spinner import Spinner
 import MySQLdb
 
 host='127.0.0.1'
 port=3306 
 user='root'
 password='binoctal'
-
 
 #class for managing the orders
 class OrderingScreen(Screen):
@@ -98,44 +98,36 @@ class OrderingScreen(Screen):
         self.rect.size=self.size
         self.rect.pos = self.pos
     def search(self,*args):
-        order = str(self.ids['n_type'].text +" "+ self.ids['weight'].text + " " + self.ids['units'] + " " + self.ids['where_to'].text)
-        self.ids['displayofshops'].clear_widgets()
-        self.ids['displayofshops'].adapter.data.extend(order)
-        self.ids['displayofshops'].trigger_reset_populate()
+        self.manager.current='search'
+        connection = MySQLdb.connect(host=host, port=port, user=user, password=password, db='Registredcustomer')
+        conn = connection.cursor()
+        ttype = self.ids['n_type'].text 
+        weight = self.ids['weight'].text 
+        units= self.ids['units'].text
+        location=self.ids['where_to'].text
+        conn.execute("SELECT Shopname,Type,Weight,Price,location FROM stock WHERE Type=%s AND Weight=%s OR location=%s", [(ttype), (weight), (location)])
+        if conn:
+            self.row = conn.fetchall()
+            for rows in self.row:
+                for cols in rows:
+                    self.label = Button(text='%s'%cols, size_hint=(.2, .2))
+                    self.ids['displays'].add_widget(self.label)
+        else:
+            self.label = Label(text='no result found')
+            self.ids['displays'].add_widget(self.label)
 
 
-    def n_type(self, *args):
-        self.N_type = ScrollView(padding=4, do_scroll_y=True, do_scroll_x=True)
-        self.box = BoxLayout(orientation='vertical', spacing=2)
-        for i in ['hashi', 'Total','k-gas', 'dscujhw', 'dhbcweecw', 'xehwcuiwc', 'schui', 'ascscdwe', 'xaxwxd', 'sadqw', 'adqw','dqwdwq','dqwdqwed']:
-            self.but = Button(text='%s'%i, on_press=self.nn_type, background_color=[1,1,1,0], color=[0,1,0,1])
-            self.box.add_widget(self.but)
-        self.N_type.add_widget(self.box)
-        self.n = Popup(title='Type', title_align='center',title_color=[.0,.4,.4,1],separator_color=[.0,.4,.4,1], size_hint=(.3, .7), content=self.N_type, auto_dismiss=True, background_color=[1,1,1,0])
-        self.n.open()
-    def nn_type(self, *args):
-        self.n.dismiss()
-        self.ids['n_type'].text=self.but.text
+    def activity_search(self, *args):
+        print('nice things')
 
+#class for searching
 
-
-         
-#listitem button
-class Listbutton(ListItemButton):
+class Search(Screen):
     def __init__(self, **kwargs):
-        super(Listbutton, self). __init__(**kwargs)
+        super(Search, self). __init__(**kwargs)
         self.bind(size=self._update_rec, pos=self._update_rec)
         with self.canvas.before:
-            Color(1,1,1,0)
             self.rect = Rectangle(size=self.size, pos=self.pos)
-        self.bind(on_press=self.order)
-    def order(self, *args):
-        self.grid = GridLayout(cols=1)
-        self.l = Label(text='dfbhug')
-        self.grid.add_widget(self.l)
-        self.pop = Popup(title='Order', title_align='center',title_color=[.0,.4,.4,1],separator_color=[.9,.9,.9,1], content=self.grid, size_hint=(.7, .4))
-        self.pop.open()
-        Clock.schedule_once(self.pop.dismiss, 3)
 
     def _update_rec(self, *args):
         self.rect.size=self.size
@@ -291,7 +283,7 @@ class ShopRegister(Screen):
         if self.ids['n_password'].text==self.ids['n_confirm_password'].text:
             connection = MySQLdb.connect(host=host, port=port, user=user, password=password, db='Registredcustomer')
             conn = connection.cursor()
-            conn.execute("CREATE TABLE IF NOT EXISTS shopregistry (id INT NOT NULL  PRIMARY KEY AUTO_INCREMENT,shopname varchar(22), shop_owner varchar(30), email_address varchar(30), phone_number varchar(20), country varchar(30), county  varchar(20), consituency varchar(30), ward varchar(30), password varchar(20))")
+            conn.execute("CREATE TABLE IF NOT EXISTS shopregistry (id INT NOT NULL  PRIMARY KEY AUTO_INCREMENT,shopname varchar(40), shop_owner varchar(30), email_address varchar(30), phone_number varchar(20), country varchar(30), county  varchar(20), consituency varchar(30), ward varchar(45), password varchar(20))")
             conn.execute("INSERT INTO shopregistry VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",[self.ids['n_shop_name'].text, self.ids['n_shop_owner'].text, self.ids['n_email_address'].text, self.ids['n_phone_number'].text, self.ids['n_country'].text, self.ids['n_county'].text, self.ids['n_consituency'].text, self.ids['n_ward'].text, self.ids['n_password'].text])
             connection.commit()
             self.pop = Popup(title='succesfull', title_color=[.0,.4,.4,1],separator_color=[.0, .4, .4,1], content=Label(text='Welcome', font_size=20,color=[0,1,0,1]), size_hint=(.3, .2))
@@ -338,6 +330,35 @@ class SelectableButton(RecycleDataViewBehavior, Button):
 class SelectableRecycleGridLayout(FocusBehavior, LayoutSelectionBehavior,
                                   RecycleGridLayout):
       pass
+
+
+
+class Grid1(GridLayout):
+    def __init__(self, **kwargs):
+        super(Grid1, self). __init__(**kwargs)
+        self.bind(minimum_height = self.setter('height'))
+
+
+class Grid2(GridLayout):
+    def __init__(self, **kwargs):
+        super(Grid2, self). __init__(**kwargs)
+        self.bind(minimum_height = self.setter('height'))
+
+
+class Grid3(GridLayout):
+    def __init__(self, **kwargs):
+        super(Grid3, self). __init__(**kwargs)
+        self.bind(minimum_height = self.setter('height'))
+
+    
+
+class Grid4(GridLayout):
+    def __init__(self, **kwargs):
+        super(Grid4, self). __init__(**kwargs)
+        self.bind(minimum_height = self.setter('height'))
+
+
+
 
 #class for shop manager
 class ShopManager(Screen):
@@ -408,7 +429,7 @@ class ShopManager(Screen):
             self.ward = conn.execute(" SELECT ward FROM shopregistry WHERE phone_number=%s AND password=%s" , [(self.nn_number), (self.nn_password)])
             print(self.shop_name + self.ward)
             conn.execute(" CREATE TABLE IF NOT EXISTS stock(id INT NOT NULL  PRIMARY KEY AUTO_INCREMENT,Shopname varchar(30) , location varchar(40), phone_number int(100) , Type varchar(30), Weight varchar(30), Price varchar(30), units varchar(40) )")
-            conn.execute("INSERT INTO stock(Shopname, location,phone_number, Type,Weight, Price,units) VALUES (%s,%s,%s,%s,%s,%s,%s)",[self.shop_name, self.ward, self.nn_number, self.type.text, self.weight.text, self.price.text, self.units.text])
+            conn.execute("INSERT INTO stock(Shopname, location,phone_number, Type,Weight, Price,units) VALUES (%s,%s,%s,%s,%s,%s,%s)",[self.shop_name,self.ward,self.nn_number,self.type.text,self.weight.text,self.price.text,self.units.text])
             connection.commit()
             text = 'Added'
             value.text=text
@@ -425,20 +446,66 @@ class ShopManager(Screen):
             value.background_color=(1,1,1,1)
     def update_stock(self, *args):
         self.ids['screenlayout'].clear_widgets()
+
         store = JsonStore('shop.json')
         self.nn_number =str(store.get('details')['phone_number'])
         connection  = MySQLdb.connect(host=host, port=port, user=user, password=password, db='Registredcustomer')
         conn = connection.cursor()
-        conn.execute("SELECT Type, Weight,Price, units From stock WHERE phone_number=%s ", [(self.nn_number),])
-        self.rows = conn.fetchall()
-        for i in self.rows:
-            for cols in i:
-                self.listitems.append(cols)
-        self.view = RecycleView(viewclass='SelectableButton', data=[{'text': str(x) for x in self.listitems}])
-        self.select = SelectableRecycleGridLayout(cols=1, default_size=(1,1), default_size_hint=(1, None), size_hint_y=(None), orientation='vertical' , multiselect=True, touch_multiselect=True)
-        self.view.add_widget(self.select)
-        self.ids['screenlayout'].add_widget(self.view)
 
+
+        self.grid = GridLayout(cols=4, size=self.size, pos=self.pos)
+        self.ids['screenlayout'].add_widget(self.grid)
+
+
+        self.stack1 = ScrollView(size_hint=(1, None), size=(Window.width, Window.height), padding=5)
+        self.grid.add_widget(self.stack1) 
+        self.stack2 = ScrollView(size_hint=(1, None), size=(Window.width, Window.height),padding=5)
+        self.grid.add_widget(self.stack2)
+        self.stack3  = ScrollView(size_hint=(1, None), size=(Window.width, Window.height),padding=5)
+        self.grid.add_widget(self.stack3)
+        self.stack4  = ScrollView(size_hint=(1, None), size=(Window.width, Window.height),padding=5)
+        self.grid.add_widget(self.stack4)
+
+        self.stack11 = Grid1(cols=1, orientation='vertical', spacing=5,size_hint=(1, 1))
+        self.stack1.add_widget(self.stack11)
+        self.stack22 = Grid2(cols=1, orientation='vertical',spacing=5, size_hint=(1, 1))
+        self.stack2.add_widget(self.stack22)
+        self.stack33  = Grid3(cols=1, orientation='vertical',spacing=5, size_hint=(1, 1))
+        self.stack3.add_widget(self.stack33)
+        self.stack44  = Grid4(cols=1, orientation='vertical',spacing=5, size_hint=(1, 1))
+        self.stack4.add_widget(self.stack44)
+
+        conn.execute("SELECT Type From stock WHERE phone_number=%s ", [(self.nn_number),])
+        self.rows = conn.fetchall()
+        for row in self.rows:
+            for cols in row:
+                self.but = Button(text='%s' %cols, size_hint=(.2, .2))
+                self.stack11.add_widget(self.but)
+
+        conn.execute("SELECT Weight From stock WHERE phone_number=%s ", [(self.nn_number),])
+        self.rows = conn.fetchall()
+        for row in self.rows:
+            for cols in row:
+                self.but = Button(text='%s' %cols, size_hint=(.2,.2))
+                self.stack22.add_widget(self.but)
+
+        conn.execute("SELECT Price From stock WHERE phone_number=%s ", [(self.nn_number),])
+        self.rows = conn.fetchall()
+        for row in self.rows:
+            for cols in row:
+                self.but = Button(text='%s' %cols, size_hint=(.2,.2))
+                self.stack33.add_widget(self.but)
+
+        conn.execute("SELECT units From stock WHERE phone_number=%s ", [(self.nn_number),])
+        self.rows = conn.fetchall()
+        for row in self.rows:
+            for cols in row:
+                self.but = Button(text='%s' %cols, size_hint=(.2, .2))
+                self.stack44.add_widget(self.but)
+
+
+
+        connection.commit()
     def orderss(self, *args):
         self.ids['screenlayout'].clear_widgets()
         for i in range(7):
